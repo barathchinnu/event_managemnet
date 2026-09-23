@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, Calendar, MapPin, Trophy, Users, ShieldCheck, Flame, PlayCircle } from 'lucide-react';
+import { Sparkles, ArrowRight, Calendar, MapPin, Trophy, Users, ShieldCheck, Flame, PlayCircle, FileText } from 'lucide-react';
 import { FEST_DETAILS } from '../data/events';
+import HeroBannerCarousel from './HeroBannerCarousel';
 
-const Hero = ({ onExploreEvents, onOpenRegister }) => {
+const Hero = ({ onExploreEvents, onOpenRegister, onViewShowcase }) => {
   // Countdown Timer calculation to fest date
   const [timeLeft, setTimeLeft] = useState({
     days: 32,
@@ -23,7 +24,7 @@ const Hero = ({ onExploreEvents, onOpenRegister }) => {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
           hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          minutes: Math.floor((difference % (1000 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
       }
@@ -45,29 +46,18 @@ const Hero = ({ onExploreEvents, onOpenRegister }) => {
       <div className="absolute top-20 right-10 w-[380px] h-[380px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* CEA Emblem Showcase */}
-          <div className="flex justify-center mb-6">
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/30 via-indigo-500/30 to-purple-500/30 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-500"></div>
-              <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-slate-950/80 p-2.5 border border-slate-800 shadow-2xl shadow-black/80 flex items-center justify-center backdrop-blur-xl group-hover:scale-105 transition-transform duration-300">
-                <img
-                  src="/cea-logo.png"
-                  alt="Civil Engineering Association (CEA)"
-                  className="w-full h-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
-                />
-              </div>
-            </div>
-          </div>
-
+        <div className="text-center max-w-5xl mx-auto">
           {/* Top Banner Tag */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-medium shadow-lg shadow-indigo-500/10 mb-8 animate-float">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-medium shadow-lg shadow-indigo-500/10 mb-6 animate-float">
             <span className="flex h-2 w-2 rounded-full bg-indigo-400 animate-ping"></span>
             <Flame className="w-4 h-4 text-amber-400" />
             <span className="font-semibold text-white">Annual National Inter-College Symposium</span>
             <span className="text-slate-400 hidden sm:inline">•</span>
             <span className="text-indigo-300 hidden sm:inline">September 30, 2026</span>
           </div>
+
+          {/* TWO BANNER RATIO IMAGES AS CAROUSEL IN THIS PLACE */}
+          <HeroBannerCarousel />
 
           {/* Main Title CIVISTA */}
           <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight mb-4 font-heading">
@@ -93,7 +83,7 @@ const Hero = ({ onExploreEvents, onOpenRegister }) => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <button
               onClick={onExploreEvents}
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-base text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95"
+              className="w-full sm:w-auto px-7 py-4 rounded-2xl font-bold text-base text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500/50 shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer"
             >
               <span>Explore Events</span>
               <ArrowRight className="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform" />
@@ -101,10 +91,18 @@ const Hero = ({ onExploreEvents, onOpenRegister }) => {
 
             <button
               onClick={() => onOpenRegister()}
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95"
+              className="w-full sm:w-auto px-7 py-4 rounded-2xl font-bold text-base text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer"
             >
               <Sparkles className="w-5 h-5 text-indigo-200" />
               <span>Register Now</span>
+            </button>
+
+            <button
+              onClick={onViewShowcase}
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl font-bold text-base text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer"
+            >
+              <FileText className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Official Poster Flow</span>
             </button>
           </div>
 

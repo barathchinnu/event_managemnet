@@ -19,6 +19,7 @@ const Navbar = ({ onOpenRegister, onViewRegistrations, registrationCount = 0 }) 
 
   const navLinks = [
     { name: 'Home', href: '#home' },
+    { name: 'Showcase', href: '#showcase' },
     { name: 'Events', href: '#events' },
     { name: 'About', href: '#about' },
     { name: 'Why Join', href: '#why-participate' },

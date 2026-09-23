@@ -38,7 +38,8 @@ export const EVENTS_DATA = [
       "Technical Depth & Feasibility (30%)",
       "Presentation Delivery & Visual Quality (20%)",
       "Response to Q&A Session (20%)"
-    ]
+    ],
+    whatsappGroupUrl: "https://chat.whatsapp.com/IAe4BrtUujjJMwK8irpVL6"
   },
   {
     id: "technical-quiz",
@@ -76,7 +77,8 @@ export const EVENTS_DATA = [
       "Speed & Accuracy in Prelims",
       "Conceptual Clarity across CS/IT/Tech Disciplines",
       "Strategic Risk Management in Buzzer Rounds"
-    ]
+    ],
+    whatsappGroupUrl: "https://chat.whatsapp.com/HnnFabV2U5B2h1A8ztEJxT"
   },
   {
     id: "ipl-auction",
@@ -117,7 +119,8 @@ export const EVENTS_DATA = [
       "Squad Balance & Composition Feasibility (40%)",
       "Overall Aggregated Player Rating (40%)",
       "Budget Efficiency & Remaining Purse Reserve (20%)"
-    ]
+    ],
+    whatsappGroupUrl: "https://chat.whatsapp.com/BvSf0S8YbKM4zUpDTMdlnl"
   },
   {
     id: "build-the-bond",
@@ -155,9 +158,29 @@ export const EVENTS_DATA = [
       "Coordination & Clear Communication (40%)",
       "Speed of Execution (30%)",
       "Creative Problem Solving (30%)"
-    ]
+    ],
+    whatsappGroupUrl: "https://chat.whatsapp.com/CuEUxEMtHq32aMLpYlFZxW"
   }
 ];
+
+export const EVENT_WHATSAPP_GROUPS = {
+  "presentation": {
+    name: "Paper Presentation (Paper Summit)",
+    url: "https://chat.whatsapp.com/IAe4BrtUujjJMwK8irpVL6"
+  },
+  "technical-quiz": {
+    name: "Technical Quiz",
+    url: "https://chat.whatsapp.com/HnnFabV2U5B2h1A8ztEJxT"
+  },
+  "ipl-auction": {
+    name: "Mock IPL Auction",
+    url: "https://chat.whatsapp.com/BvSf0S8YbKM4zUpDTMdlnl"
+  },
+  "build-the-bond": {
+    name: "Build The Bond",
+    url: "https://chat.whatsapp.com/CuEUxEMtHq32aMLpYlFZxW"
+  }
+};
 
 export const FEST_DETAILS = {
   name: "CIVISTA",
@@ -228,8 +251,22 @@ export const FEST_DETAILS = {
       phone: "+91 9342529462",
       email: "maheshkumars.24civil@kongu.edu"
     },
+    studentCoordinator: {
+      name: "Suganya S S",
+      designation: "Student Coordinator, CEA",
+      phone: "+91 9842983032",
+      email: "suganyass.24civil@kongu.edu"
+    },
+    portalUrl: "https://event-managemnet.vercel.app/",
     venueAddress: "Kalingarayan Seminar Hall, Kongu Engineering College, Perundurai, Erode - 638060",
     email: "civista@college.edu",
-    phone: "+91 7010514211 / +91 6369074762"
-  }
+    phone: "+91 7010514211 / +91 6369074762",
+    portalDeveloper: {
+      name: "Barath M",
+      rollNumber: "24CSR036",
+      role: "Portal Developer",
+      credit: "Created by Barath M (24CSR036)"
+    }
+  },
+  createdBy: "Created by Barath M (24CSR036)"
 };

@@ -107,12 +107,14 @@ const Footer = ({ onOpenRegister }) => {
         </div>
 
         {/* Bottom Credits & Copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 CIVISTA. All Rights Reserved.</p>
-          <div className="flex items-center gap-1">
-            <span>Crafted with</span>
-            <Heart className="w-3.5 h-3.5 text-pink-500 fill-pink-500 inline mx-0.5" />
-            <span>for collegiate innovation & excellence</span>
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p className="text-slate-500">© 2026 CIVISTA • Kongu Engineering College. All Rights Reserved.</p>
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400">Created by</span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900/90 border border-indigo-500/40 text-indigo-300 font-bold shadow-lg shadow-indigo-500/10">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+              Barath M <span className="text-amber-400 font-mono">(24CSR036)</span>
+            </span>
           </div>
         </div>
       </div>

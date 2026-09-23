@@ -7,10 +7,14 @@ import {
   Users, 
   CheckCircle2, 
   AlertCircle,
-  RefreshCw
+  RefreshCw,
+  ExternalLink,
+  Copy,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { EVENTS_DATA } from '../data/events';
+import { EVENTS_DATA, EVENT_WHATSAPP_GROUPS } from '../data/events';
 import { saveRegistration } from '../utils/storage';
 import { submitRegistrationToSheets, isGoogleSheetsConfigured, testConnectionToSheets } from '../utils/googleSheets';
 import { useToast } from './Toast';
@@ -67,6 +71,7 @@ const RegistrationForm = ({
   const [submissionError, setSubmissionError] = useState(null);
   const [isTestingConnection, setIsTestingConnection] = useState(false);
   const [connectionTestResult, setConnectionTestResult] = useState(null);
+  const [showAllWhatsappGroups, setShowAllWhatsappGroups] = useState(false);
 
   // Sync when selectedEventId prop changes
   useEffect(() => {
@@ -253,6 +258,7 @@ const RegistrationForm = ({
         registrationTime: regTime,
         sheetName:     formData.sheetName || 'CIVISTA Registrations',
         spreadsheetUrl: formData.spreadsheetUrl || null,
+        whatsappGroupUrl: currentEventConfig?.whatsappGroupUrl || EVENT_WHATSAPP_GROUPS[formData.event]?.url || null,
       };
 
       // Save backup to localStorage (won't throw; non-critical)
@@ -328,6 +334,7 @@ const RegistrationForm = ({
       teamMembers:       teamMembersArray,
       registrationDate:  new Date().toLocaleDateString('en-IN'),
       registrationTime:  new Date().toLocaleTimeString('en-IN'),
+      whatsappGroupUrl:  currentEventConfig?.whatsappGroupUrl || EVENT_WHATSAPP_GROUPS[formData.event]?.url || null,
     };
 
     try {
@@ -552,6 +559,115 @@ const RegistrationForm = ({
             </div>
           </div>
         </div>
+
+        {/* OFFICIAL PARTICIPANT WHATSAPP GROUP JOIN CARD */}
+        {(() => {
+          const eventWhatsappUrl = 
+            registeredSuccessData.whatsappGroupUrl || 
+            EVENT_WHATSAPP_GROUPS[registeredSuccessData.event]?.url || 
+            (
+              registeredSuccessData.event?.includes('quiz') ? EVENT_WHATSAPP_GROUPS['technical-quiz'].url :
+              registeredSuccessData.event?.includes('auction') ? EVENT_WHATSAPP_GROUPS['ipl-auction'].url :
+              registeredSuccessData.event?.includes('bond') ? EVENT_WHATSAPP_GROUPS['build-the-bond'].url :
+              EVENT_WHATSAPP_GROUPS['presentation'].url
+            );
+
+          return (
+            <div className="max-w-md mx-auto mb-8 rounded-3xl bg-gradient-to-br from-emerald-950/80 via-slate-950 to-emerald-950/80 border-2 border-emerald-500/50 p-5 sm:p-6 text-left shadow-2xl relative overflow-hidden group">
+              <div className="absolute -top-10 -right-10 w-28 h-28 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div className="flex items-start gap-3.5 mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#25D366]/20 border border-[#25D366]/50 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/30">
+                  <svg className="w-6 h-6 text-[#25D366] fill-current" viewBox="0 0 24 24">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.99.54 1.761.83 2.796.83h.001c3.181 0 5.766-2.586 5.767-5.767.001-3.18-2.585-5.766-5.768-5.766zm3.328 8.163c-.14-.233-.513-.372-.979-.606-.466-.233-2.756-1.359-3.185-1.515-.429-.156-.741-.233-1.053.233-.312.467-1.207 1.515-1.48 1.826-.272.312-.544.351-1.01.117-.466-.233-1.968-.725-3.748-2.312-1.385-1.234-2.321-2.759-2.593-3.226-.272-.467-.029-.719.204-.951.21-.21.466-.544.699-.816.233-.272.311-.467.466-.778.156-.312.078-.584-.039-.817-.117-.233-1.053-2.535-1.442-3.471-.379-.912-.764-.788-1.053-.802l-.897-.015c-.312 0-.817.117-1.246.584s-1.636 1.597-1.636 3.896c0 2.299 1.675 4.519 1.908 4.831.233.312 3.298 5.036 7.99 7.062 1.116.482 1.988.77 2.667.985 1.121.356 2.141.306 2.947.185.899-.134 2.756-1.127 3.146-2.217.389-1.089.389-2.023.272-2.217z"/>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      Official WhatsApp Group
+                    </span>
+                    <span className="flex h-2 w-2 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-white font-heading">
+                    Join {registeredSuccessData.eventTitle} Group
+                  </h4>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Click below to join your event's WhatsApp group for room allotments, spot schedules, rule updates, and coordinator announcements.
+                  </p>
+                </div>
+              </div>
+
+              {/* Clickable Action Button */}
+              <div className="space-y-3 pt-3 border-t border-emerald-500/20">
+                <a
+                  href={eventWhatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 px-4 rounded-xl font-black text-xs sm:text-sm text-slate-950 bg-gradient-to-r from-[#25D366] via-emerald-400 to-[#25D366] hover:from-emerald-300 hover:to-emerald-400 shadow-xl shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 active:scale-95 group/btn cursor-pointer"
+                >
+                  <span>Click to Join WhatsApp Group</span>
+                  <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+
+                <div className="flex items-center justify-between text-[11px] text-slate-400 px-1 bg-slate-900/70 p-2 rounded-xl border border-slate-800">
+                  <span className="truncate max-w-[220px] sm:max-w-[260px] text-emerald-300 font-mono">
+                    {eventWhatsappUrl}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(eventWhatsappUrl);
+                      addToast({
+                        type: 'success',
+                        title: 'Link Copied!',
+                        message: 'WhatsApp group invite link copied to clipboard.'
+                      });
+                    }}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy</span>
+                  </button>
+                </div>
+
+                {/* All 4 Groups Expandable Section */}
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllWhatsappGroups(!showAllWhatsappGroups)}
+                    className="w-full text-xs text-slate-400 hover:text-slate-200 flex items-center justify-between py-1 transition-colors cursor-pointer"
+                  >
+                    <span>Need to join other CIVISTA event groups?</span>
+                    {showAllWhatsappGroups ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+
+                  {showAllWhatsappGroups && (
+                    <div className="mt-2 space-y-2 pt-2 border-t border-slate-800/80 animate-in fade-in duration-200">
+                      {Object.entries(EVENT_WHATSAPP_GROUPS).map(([key, item]) => (
+                        <div key={key} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs">
+                          <span className="text-slate-200 font-medium truncate max-w-[190px]">{item.name}</span>
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600 text-emerald-300 hover:text-white font-semibold flex items-center gap-1 transition-colors"
+                          >
+                            <span>Join</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button

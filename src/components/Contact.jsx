@@ -8,7 +8,8 @@ import {
   UserCheck, 
   CheckCircle2, 
   AlertCircle,
-  MessageSquare
+  MessageSquare,
+  Code2
 } from 'lucide-react';
 import { FEST_DETAILS } from '../data/events';
 import { useToast } from './Toast';
@@ -126,14 +127,14 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Student Coordinator */}
+              {/* Student President */}
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 font-bold">
-                  SC
+                  MS
                 </div>
                 <div>
                   <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
-                    Student President
+                    Student Coordinator
                   </span>
                   <h4 className="text-base font-bold text-white">
                     {FEST_DETAILS.contact.studentPresident.name}
@@ -151,6 +152,54 @@ const Contact = () => {
                       {FEST_DETAILS.contact.studentPresident.email}
                     </a>
                   </div>
+                </div>
+              </div>
+
+              {/* Student Coordinator - Suganya S S */}
+              {FEST_DETAILS.contact.studentCoordinator && (
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 font-bold">
+                    SS
+                  </div>
+                  <div>
+                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+                      Student Coordinator
+                    </span>
+                    <h4 className="text-base font-bold text-white">
+                      {FEST_DETAILS.contact.studentCoordinator.name}
+                    </h4>
+                    <p className="text-xs text-slate-400 mb-1">
+                      {FEST_DETAILS.contact.studentCoordinator.designation}
+                    </p>
+                    <div className="flex flex-wrap gap-4 text-xs text-purple-300 mt-2">
+                      <a href={`tel:${FEST_DETAILS.contact.studentCoordinator.phone}`} className="hover:underline flex items-center gap-1">
+                        <Phone className="w-3.5 h-3.5" />
+                        {FEST_DETAILS.contact.studentCoordinator.phone}
+                      </a>
+                      <a href={`mailto:${FEST_DETAILS.contact.studentCoordinator.email}`} className="hover:underline flex items-center gap-1">
+                        <Mail className="w-3.5 h-3.5" />
+                        {FEST_DETAILS.contact.studentCoordinator.email}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Portal Developer */}
+              <div className="p-4 rounded-2xl bg-slate-900/80 border border-amber-500/20 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 font-bold">
+                  <Code2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+                    Portal Developer & Designer
+                  </span>
+                  <h4 className="text-base font-bold text-white">
+                    Barath M <span className="text-amber-400 text-sm font-mono">(24CSR036)</span>
+                  </h4>
+                  <p className="text-xs text-slate-400">
+                    Department of Computer Science and Engineering, Kongu Engineering College
+                  </p>
                 </div>
               </div>
             </div>

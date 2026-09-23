@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Ticket, Trash2, Printer, ExternalLink, CheckCircle, FileText } from 'lucide-react';
 import { getStoredRegistrations, deleteRegistration } from '../utils/storage';
+import { EVENT_WHATSAPP_GROUPS } from '../data/events';
 import { useToast } from './Toast';
 
 const RegistrationsListModal = ({ isOpen, onClose, onRefreshCount }) => {
@@ -132,6 +133,31 @@ const RegistrationsListModal = ({ isOpen, onClose, onRefreshCount }) => {
                         </div>
                       )}
                     </div>
+
+                    {/* WhatsApp Group Link for registered event */}
+                    {(() => {
+                      const waUrl = item.whatsappGroupUrl || EVENT_WHATSAPP_GROUPS[item.event]?.url || (
+                        item.event?.includes('quiz') ? EVENT_WHATSAPP_GROUPS['technical-quiz'].url :
+                        item.event?.includes('auction') ? EVENT_WHATSAPP_GROUPS['ipl-auction'].url :
+                        item.event?.includes('bond') ? EVENT_WHATSAPP_GROUPS['build-the-bond'].url :
+                        EVENT_WHATSAPP_GROUPS['presentation'].url
+                      );
+
+                      return waUrl ? (
+                        <a
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 hover:text-emerald-200 text-xs font-semibold transition-all mb-3 w-full justify-center group"
+                        >
+                          <svg className="w-4 h-4 text-[#25D366] fill-current" viewBox="0 0 24 24">
+                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.99.54 1.761.83 2.796.83h.001c3.181 0 5.766-2.586 5.767-5.767.001-3.18-2.585-5.766-5.768-5.766zm3.328 8.163c-.14-.233-.513-.372-.979-.606-.466-.233-2.756-1.359-3.185-1.515-.429-.156-.741-.233-1.053.233-.312.467-1.207 1.515-1.48 1.826-.272.312-.544.351-1.01.117-.466-.233-1.968-.725-3.748-2.312-1.385-1.234-2.321-2.759-2.593-3.226-.272-.467-.029-.719.204-.951.21-.21.466-.544.699-.816.233-.272.311-.467.466-.778.156-.312.078-.584-.039-.817-.117-.233-1.053-2.535-1.442-3.471-.379-.912-.764-.788-1.053-.802l-.897-.015c-.312 0-.817.117-1.246.584s-1.636 1.597-1.636 3.896c0 2.299 1.675 4.519 1.908 4.831.233.312 3.298 5.036 7.99 7.062 1.116.482 1.988.77 2.667.985 1.121.356 2.141.306 2.947.185.899-.134 2.756-1.127 3.146-2.217.389-1.089.389-2.023.272-2.217z"/>
+                          </svg>
+                          <span>Join WhatsApp Group</span>
+                          <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </a>
+                      ) : null;
+                    })()}
                   </div>
 
                   <div className="flex items-center justify-between pt-3 border-t border-slate-900 text-xs text-slate-400">
