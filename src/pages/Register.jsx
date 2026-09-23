@@ -20,9 +20,13 @@ const Register = ({ onBackToHome, preselectedEventId = '' }) => {
 
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-indigo-500/15 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-indigo-500/30">
-            <Sparkles className="w-3.5 h-3.5" />
-            Official Portal
+          <div className="flex justify-center mb-4">
+            <div className="w-20 h-20 rounded-2xl bg-slate-900/90 p-2 border border-slate-800 shadow-xl shadow-indigo-500/10 flex items-center justify-center">
+              <img src="/cea-logo.png" alt="CEA" className="w-full h-full object-contain" />
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-900 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-500/30">
+            <span>Civil Engineering Association (CEA)</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-3 font-heading">
             Register for <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">CIVISTA 2026</span>

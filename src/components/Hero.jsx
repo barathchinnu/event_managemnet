@@ -46,6 +46,20 @@ const Hero = ({ onExploreEvents, onOpenRegister }) => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
         <div className="text-center max-w-4xl mx-auto">
+          {/* CEA Emblem Showcase */}
+          <div className="flex justify-center mb-6">
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/30 via-indigo-500/30 to-purple-500/30 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-500"></div>
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-slate-950/80 p-2.5 border border-slate-800 shadow-2xl shadow-black/80 flex items-center justify-center backdrop-blur-xl group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src="/cea-logo.png"
+                  alt="Civil Engineering Association (CEA)"
+                  className="w-full h-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Top Banner Tag */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-indigo-500/30 text-indigo-300 text-xs sm:text-sm font-medium shadow-lg shadow-indigo-500/10 mb-8 animate-float">
             <span className="flex h-2 w-2 rounded-full bg-indigo-400 animate-ping"></span>

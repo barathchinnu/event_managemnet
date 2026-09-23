@@ -30,20 +30,25 @@ const Footer = ({ onOpenRegister }) => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-12 border-b border-slate-900">
           {/* Logo & Tagline */}
           <div className="max-w-md">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-0.5 shadow-lg shadow-indigo-500/30">
-                <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                  <span className="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-400 to-purple-300 font-heading">
-                    C
-                  </span>
+            <div className="flex items-center gap-3.5 mb-3">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/30 via-indigo-500/40 to-purple-600/40 p-0.5 shadow-lg shadow-indigo-500/20">
+                <div className="w-full h-full bg-slate-950 rounded-[10px] p-1 flex items-center justify-center overflow-hidden">
+                  <img src="/cea-logo.png" alt="Civil Engineering Association Logo" className="w-full h-full object-contain" />
                 </div>
               </div>
-              <span className="text-2xl font-black text-white font-heading tracking-tight">
-                CIVISTA
-              </span>
-              <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-md">
-                2026
-              </span>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-black text-white font-heading tracking-tight">
+                    CIVISTA
+                  </span>
+                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-md">
+                    2026
+                  </span>
+                </div>
+                <span className="text-[11px] tracking-wider uppercase text-amber-300/80 font-mono block">
+                  Civil Engineering Association (CEA)
+                </span>
+              </div>
             </div>
             <p className="text-sm font-semibold text-slate-300 font-heading">
               Where Ideas Meet Innovation, Competition Meets Fun

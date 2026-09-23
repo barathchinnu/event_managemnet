@@ -219,17 +219,17 @@ export const FEST_DETAILS = {
     staffCoordinator: {
       name: "Dr. K. Vishnuvardhan",
       designation: "Assistant Professor (SLG) & Faculty Coordinator, CIVISTA 2026",
-      phone: "+91 93425 29462",
+      phone: "+91 9791674147",
       email: "civista@college.edu"
     },
     studentPresident: {
       name: "Maheshkumar S",
       designation: "Student Coordinator, CEA",
-      phone: "+91 93425 29462",
-      email: "cea_official_kec@civista.org"
+      phone: "+91 9342529462",
+      email: "maheshkumars.24civil@kongu.edu"
     },
     venueAddress: "Kalingarayan Seminar Hall, Kongu Engineering College, Perundurai, Erode - 638060",
     email: "civista@college.edu",
-    phone: "+91 93425 29462 / +91 63690 74765"
+    phone: "+91 7010514211 / +91 6369074762"
   }
 };

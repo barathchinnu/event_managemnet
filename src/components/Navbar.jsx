@@ -57,13 +57,11 @@ const Navbar = ({ onOpenRegister, onViewRegistrations, registrationCount = 0 }) 
             onClick={(e) => handleLinkClick(e, '#home')}
             className="flex items-center gap-3 group focus:outline-none"
           >
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-tr from-indigo-400 to-purple-300 font-heading">
-                  C
-                </span>
+            <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-amber-400/30 via-indigo-500/40 to-purple-600/40 p-0.5 shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all">
+              <div className="w-full h-full bg-slate-950 rounded-[10px] p-0.5 flex items-center justify-center overflow-hidden">
+                <img src="/cea-logo.png" alt="Civil Engineering Association Logo" className="w-full h-full object-contain" />
               </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full animate-ping opacity-75"></div>
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full animate-ping opacity-75"></div>
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -74,8 +72,8 @@ const Navbar = ({ onOpenRegister, onViewRegistrations, registrationCount = 0 }) 
                   2026
                 </span>
               </div>
-              <span className="text-[10px] tracking-wider uppercase text-slate-400 font-mono hidden sm:block">
-                Inter-College Fest
+              <span className="text-[10px] tracking-wider uppercase text-amber-300/80 font-mono hidden sm:block">
+                Civil Engineering Association (CEA)
               </span>
             </div>
           </a>
