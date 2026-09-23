@@ -41,7 +41,7 @@ const INITIAL_FORM_STATE = {
   fullName: '',
   email: '',
   phone: '',
-  college: '',
+  college: 'Kongu Engineering College',
   department: '',
   year: '',
   event: '',
@@ -675,7 +675,7 @@ const RegistrationForm = ({
                 type="text"
                 value={formData.college}
                 onChange={(e) => handleInputChange('college', e.target.value)}
-                placeholder="e.g. St. Xavier Institute of Tech"
+                placeholder="Kongu Engineering College"
                 className={`w-full px-4 py-3 bg-slate-900/90 rounded-xl border text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${
                   errors.college
                     ? 'border-red-500 focus:ring-red-500/50'
