@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Sparkles, Heart } from 'lucide-react';
+import { ArrowUp, Sparkles, Heart, Phone } from 'lucide-react';
 
 const Footer = ({ onOpenRegister }) => {
   const scrollToTop = () => {
@@ -109,12 +109,21 @@ const Footer = ({ onOpenRegister }) => {
         {/* Bottom Credits & Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p className="text-slate-500">© 2026 CIVISTA • Kongu Engineering College. All Rights Reserved.</p>
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Created by</span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900/90 border border-indigo-500/40 text-indigo-300 font-bold shadow-lg shadow-indigo-500/10">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              Barath M <span className="text-amber-400 font-mono">(24CSR036)</span>
-            </span>
+          <div className="flex flex-col items-center sm:items-end gap-1.5">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Developed by</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900/90 border border-indigo-500/40 text-indigo-300 font-bold shadow-lg shadow-indigo-500/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                Barath M <span className="text-amber-400 font-mono">(24CSR036)</span>
+              </span>
+            </div>
+            <a
+              href="tel:+916369166195"
+              className="inline-flex items-center gap-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors font-medium"
+            >
+              <Phone className="w-3.5 h-3.5 text-amber-400" />
+              <span>Contact: 6369166195</span>
+            </a>
           </div>
         </div>
       </div>

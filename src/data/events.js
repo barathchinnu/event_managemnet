@@ -264,9 +264,10 @@ export const FEST_DETAILS = {
     portalDeveloper: {
       name: "Barath M",
       rollNumber: "24CSR036",
+      phone: "+91 6369166195",
       role: "Portal Developer",
-      credit: "Created by Barath M (24CSR036)"
+      credit: "Developed by Barath M (24CSR036)"
     }
   },
-  createdBy: "Created by Barath M (24CSR036)"
+  createdBy: "Developed by Barath M (24CSR036)"
 };

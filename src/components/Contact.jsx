@@ -200,6 +200,15 @@ const Contact = () => {
                   <p className="text-xs text-slate-400">
                     Department of Computer Science and Engineering, Kongu Engineering College
                   </p>
+                  <div className="mt-2.5">
+                    <a
+                      href="tel:+916369166195"
+                      className="inline-flex items-center gap-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors font-medium"
+                    >
+                      <Phone className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Contact: 6369166195</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
