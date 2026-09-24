@@ -127,7 +127,7 @@ const PosterShowcase = ({ onOpenRegister, onExploreEvents }) => {
                     </div>
                     <div>
                       <div className="text-xs font-bold text-white">Paper Summit</div>
-                      <div className="text-[11px] text-slate-400">Technical • 10:00 AM</div>
+                      <div className="text-[11px] text-slate-400">Technical • 09:45 AM - 12:30 PM</div>
                     </div>
                   </div>
 
@@ -137,7 +137,7 @@ const PosterShowcase = ({ onOpenRegister, onExploreEvents }) => {
                     </div>
                     <div>
                       <div className="text-xs font-bold text-white">Technical Quiz</div>
-                      <div className="text-[11px] text-slate-400">Technical • 01:30 PM</div>
+                      <div className="text-[11px] text-slate-400">Technical • 10:00 AM - 12:30 PM</div>
                     </div>
                   </div>
 
@@ -147,7 +147,7 @@ const PosterShowcase = ({ onOpenRegister, onExploreEvents }) => {
                     </div>
                     <div>
                       <div className="text-xs font-bold text-white">Mock IPL Auction</div>
-                      <div className="text-[11px] text-slate-400">Non-Technical • 10:30 AM</div>
+                      <div className="text-[11px] text-slate-400">Non-Technical • 01:30 PM - 03:30 PM</div>
                     </div>
                   </div>
 
@@ -157,7 +157,7 @@ const PosterShowcase = ({ onOpenRegister, onExploreEvents }) => {
                     </div>
                     <div>
                       <div className="text-xs font-bold text-white">Build The Bond</div>
-                      <div className="text-[11px] text-slate-400">Non-Technical • 02:30 PM</div>
+                      <div className="text-[11px] text-slate-400">Non-Technical • 01:30 PM - 03:30 PM</div>
                     </div>
                   </div>
                 </div>

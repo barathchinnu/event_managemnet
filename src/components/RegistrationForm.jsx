@@ -907,6 +907,7 @@ const RegistrationForm = ({
                   </div>
                   <div className="font-bold text-sm text-white">{ev.title}</div>
                   <div className="text-[11px] text-slate-400 mt-1">{ev.teamSize}</div>
+                  <div className="text-[10px] text-indigo-400 font-medium mt-0.5">{ev.time}</div>
                 </button>
               );
             })}

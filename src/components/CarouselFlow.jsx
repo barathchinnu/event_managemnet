@@ -686,7 +686,7 @@ const CarouselFlow = ({ onOpenRegister, onExploreEvents }) => {
                       <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
                       <div>
                         <div className="text-xs font-bold text-white">Paper Summit</div>
-                        <div className="text-[10px] text-slate-400">Technical</div>
+                        <div className="text-[10px] text-slate-400">Technical • 09:45 AM - 12:30 PM</div>
                       </div>
                     </div>
 
@@ -694,7 +694,7 @@ const CarouselFlow = ({ onOpenRegister, onExploreEvents }) => {
                       <HelpCircle className="w-4 h-4 text-cyan-400 shrink-0" />
                       <div>
                         <div className="text-xs font-bold text-white">Technical Quiz</div>
-                        <div className="text-[10px] text-slate-400">Technical</div>
+                        <div className="text-[10px] text-slate-400">Technical • 10:00 AM - 12:30 PM</div>
                       </div>
                     </div>
 
@@ -702,7 +702,7 @@ const CarouselFlow = ({ onOpenRegister, onExploreEvents }) => {
                       <Gavel className="w-4 h-4 text-amber-400 shrink-0" />
                       <div>
                         <div className="text-xs font-bold text-white">Mock IPL Auction</div>
-                        <div className="text-[10px] text-slate-400">Non-Technical</div>
+                        <div className="text-[10px] text-slate-400">Non-Technical • 01:30 PM - 03:30 PM</div>
                       </div>
                     </div>
 
@@ -710,7 +710,7 @@ const CarouselFlow = ({ onOpenRegister, onExploreEvents }) => {
                       <HeartHandshake className="w-4 h-4 text-emerald-400 shrink-0" />
                       <div>
                         <div className="text-xs font-bold text-white">Build The Bond</div>
-                        <div className="text-[10px] text-slate-400">Non-Technical</div>
+                        <div className="text-[10px] text-slate-400">Non-Technical • 01:30 PM - 03:30 PM</div>
                       </div>
                     </div>
                   </div>
