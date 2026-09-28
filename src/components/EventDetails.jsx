@@ -15,10 +15,12 @@ import {
   Presentation, 
   HelpCircle, 
   Gavel, 
-  HeartHandshake 
+  HeartHandshake,
+  Ticket,
+  AlertCircle
 } from 'lucide-react';
 
-const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
+const EventDetails = ({ event, isOpen, onClose, onRegister, currentCount = 0 }) => {
   // ESC key listener to close modal
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -37,6 +39,7 @@ const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
   if (!isOpen || !event) return null;
 
   const isIpl = event.isIplSpecial;
+  const isFull = event.registrationLimit && currentCount >= event.registrationLimit;
 
   const getEventIcon = () => {
     switch (event.id) {
@@ -117,6 +120,18 @@ const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
                 >
                   {event.category}
                 </span>
+
+                {isFull ? (
+                  <span className="px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 text-xs font-bold uppercase">
+                    Full ({event.registrationLimit}/{event.registrationLimit})
+                  </span>
+                ) : event.registrationLimit ? (
+                  <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-1">
+                    <Ticket className="w-3 h-3" />
+                    <span>Cap: {event.limitLabel || `${event.registrationLimit} Slots`}</span>
+                  </span>
+                ) : null}
+
                 <span className="text-xs text-slate-400 flex items-center gap-1">
                   <Trophy className="w-3.5 h-3.5 text-amber-400" />
                   {event.badge}
@@ -127,6 +142,17 @@ const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
               </h2>
             </div>
           </div>
+
+          {/* Registrations Full Alert Banner */}
+          {isFull && (
+            <div className="mb-6 p-4 rounded-2xl bg-red-950/40 border border-red-500/40 flex items-center gap-3 text-red-300">
+              <AlertCircle className="w-6 h-6 text-red-400 shrink-0" />
+              <div className="text-xs sm:text-sm">
+                <strong className="block text-white font-bold">Registrations Closed for this Event</strong>
+                <span>This event has reached its maximum capacity limit of {event.registrationLimit} registrations. New registrations cannot be accepted.</span>
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <div className="mb-6">
@@ -181,6 +207,22 @@ const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
                 <span className="text-slate-200 font-medium">{event.teamSize}</span>
               </div>
             </div>
+            {event.registrationLimit && (
+              <div className="flex items-center gap-3 text-sm col-span-1 sm:col-span-2 p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+                <div>
+                  <span className="text-xs text-slate-400 block">Registration Capacity</span>
+                  <span className="text-white font-bold">
+                    {event.limitLabel || `${event.registrationLimit} Slots`} (Strict Cap)
+                    {currentCount > 0 && (
+                      <span className="text-slate-400 font-normal ml-2">
+                        &bull; {currentCount}/{event.registrationLimit} registered
+                      </span>
+                    )}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Rules & Guidelines */}
@@ -232,20 +274,29 @@ const EventDetails = ({ event, isOpen, onClose, onRegister }) => {
             >
               Close
             </button>
-            <button
-              onClick={() => {
-                onClose();
-                onRegister(event.id);
-              }}
-              className={`px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg transition-all flex items-center gap-2 active:scale-95 ${
-                isIpl
-                  ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black hover:from-amber-400 hover:to-yellow-500'
-                  : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500'
-              }`}
-            >
-              <span>Register for {event.title}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            {isFull ? (
+              <button
+                disabled
+                className="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-400 bg-slate-800 border border-slate-700 cursor-not-allowed opacity-80"
+              >
+                Registrations Full
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  onClose();
+                  onRegister(event.id);
+                }}
+                className={`px-6 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg transition-all flex items-center gap-2 active:scale-95 ${
+                  isIpl
+                    ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-slate-950 font-black hover:from-amber-400 hover:to-yellow-500'
+                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500'
+                }`}
+              >
+                <span>Register for {event.title}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>

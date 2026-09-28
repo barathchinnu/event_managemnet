@@ -11,7 +11,8 @@ import {
   ExternalLink,
   Copy,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Ticket
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { EVENTS_DATA, EVENT_WHATSAPP_GROUPS } from '../data/events';
@@ -60,7 +61,8 @@ const INITIAL_FORM_STATE = {
 const RegistrationForm = ({ 
   selectedEventId = '', 
   onSuccess = null,
-  isModal = false 
+  isModal = false,
+  eventCounts = {}
 }) => {
   const { addToast } = useToast();
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
@@ -81,6 +83,11 @@ const RegistrationForm = ({
   }, [selectedEventId]);
 
   const currentEventConfig = EVENTS_DATA.find(e => e.id === formData.event);
+  const isCurrentEventFull = Boolean(
+    currentEventConfig &&
+    currentEventConfig.registrationLimit &&
+    (eventCounts[formData.event] || 0) >= currentEventConfig.registrationLimit
+  );
 
   const handleEventSelection = (eventId) => {
     const ev = EVENTS_DATA.find(e => e.id === eventId);
@@ -102,6 +109,15 @@ const RegistrationForm = ({
 
     // Clear event error if any
     setErrors(prev => ({ ...prev, event: undefined }));
+
+    const count = (eventCounts && eventCounts[eventId]) || 0;
+    if (ev.registrationLimit && count >= ev.registrationLimit) {
+      addToast({
+        type: 'warning',
+        title: 'Registrations Closed',
+        message: `${ev.title} has reached the limit of ${ev.registrationLimit} registrations.`
+      });
+    }
   };
 
   const handleInputChange = (field, value) => {
@@ -160,6 +176,11 @@ const RegistrationForm = ({
 
     if (!formData.event) {
       newErrors.event = "Please select an event to register for";
+    } else if (currentEventConfig && currentEventConfig.registrationLimit) {
+      const count = (eventCounts && eventCounts[formData.event]) || 0;
+      if (count >= currentEventConfig.registrationLimit) {
+        newErrors.event = `Registrations for ${currentEventConfig.title} are closed (Limit of ${currentEventConfig.registrationLimit} reached). Please choose another event.`;
+      }
     }
 
     // Team validation if participationType is 'team'
@@ -884,13 +905,20 @@ const RegistrationForm = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {EVENTS_DATA.map((ev) => {
               const isSelected = formData.event === ev.id;
+              const count = eventCounts[ev.id] || 0;
+              const isFull = ev.registrationLimit && count >= ev.registrationLimit;
+
               return (
                 <button
                   type="button"
                   key={ev.id}
                   onClick={() => handleEventSelection(ev.id)}
                   className={`p-3.5 rounded-2xl text-left border transition-all duration-200 relative ${
-                    isSelected
+                    isFull
+                      ? isSelected
+                        ? 'bg-red-950/40 border-red-500 shadow-md ring-1 ring-red-500'
+                        : 'bg-slate-950/60 border-red-900/30 hover:border-red-700/50 opacity-75'
+                      : isSelected
                       ? ev.isIplSpecial
                         ? 'bg-amber-500/20 border-amber-400 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400'
                         : 'bg-indigo-600/25 border-indigo-500 shadow-lg shadow-indigo-500/20 ring-1 ring-indigo-500'
@@ -901,17 +929,69 @@ const RegistrationForm = ({
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                       {ev.category === 'Technical Event' ? 'Tech' : 'Non-Tech'}
                     </span>
-                    {isSelected && (
-                      <span className="w-2 h-2 rounded-full bg-indigo-400"></span>
+                    {isFull ? (
+                      <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40">
+                        Full
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700">
+                        {ev.limitBadge || `Cap: ${ev.registrationLimit}`}
+                      </span>
                     )}
                   </div>
-                  <div className="font-bold text-sm text-white">{ev.title}</div>
+                  <div className="font-bold text-sm text-white flex items-center justify-between">
+                    <span>{ev.title}</span>
+                    {isSelected && !isFull && (
+                      <span className="w-2 h-2 rounded-full bg-indigo-400 shrink-0"></span>
+                    )}
+                  </div>
                   <div className="text-[11px] text-slate-400 mt-1">{ev.teamSize}</div>
                   <div className="text-[10px] text-indigo-400 font-medium mt-0.5">{ev.time}</div>
                 </button>
               );
             })}
           </div>
+
+          {/* Selected Event Capacity Info Banner */}
+          {currentEventConfig && (
+            <div className={`mt-3 p-3.5 rounded-2xl border flex items-center justify-between gap-3 text-xs ${
+              isCurrentEventFull
+                ? 'bg-red-950/50 border-red-500/40 text-red-200'
+                : 'bg-slate-900/90 border-slate-800 text-slate-300'
+            }`}>
+              <div className="flex items-center gap-2">
+                {isCurrentEventFull ? (
+                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                ) : (
+                  <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+                )}
+                <span>
+                  {isCurrentEventFull ? (
+                    <strong className="text-red-300 font-bold">
+                      Registrations Closed: {currentEventConfig.title} has reached the limit of {currentEventConfig.registrationLimit} registrations.
+                    </strong>
+                  ) : (
+                    <>
+                      <strong className="text-white font-bold">Registration Limit:</strong> {currentEventConfig.limitLabel || `${currentEventConfig.registrationLimit} Slots`} strictly enforced (first-come, first-served basis).
+                      {(eventCounts[formData.event] || 0) > 0 && (
+                        <span className="text-slate-400 ml-1">
+                          ({eventCounts[formData.event] || 0}/{currentEventConfig.registrationLimit} filled)
+                        </span>
+                      )}
+                    </>
+                  )}
+                </span>
+              </div>
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0 font-bold ${
+                isCurrentEventFull
+                  ? 'bg-red-500/20 text-red-300 border border-red-500/30'
+                  : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+              }`}>
+                {isCurrentEventFull ? 'FULL' : `MAX ${currentEventConfig.registrationLimit}`}
+              </span>
+            </div>
+          )}
+
           {errors.event && (
             <p className="text-xs text-red-400 mt-2 flex items-center gap-1">
               <AlertCircle className="w-3.5 h-3.5" />
@@ -1108,23 +1188,33 @@ const RegistrationForm = ({
           <span>Reset Form</span>
         </button>
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
-        >
-          {isSubmitting ? (
-            <div className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-              <span>Processing Registration...</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Send className="w-4 h-4" />
-              <span>Submit Registration</span>
-            </div>
-          )}
-        </button>
+        {isCurrentEventFull ? (
+          <button
+            type="button"
+            disabled
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold text-slate-400 bg-slate-900 border border-slate-800 cursor-not-allowed opacity-80"
+          >
+            Registrations Full for this Event
+          </button>
+        ) : (
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 shadow-xl shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                <span>Processing Registration...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Send className="w-4 h-4" />
+                <span>Submit Registration</span>
+              </div>
+            )}
+          </button>
+        )}
       </div>
     </form>
   );

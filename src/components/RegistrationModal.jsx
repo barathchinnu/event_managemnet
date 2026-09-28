@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { X, Sparkles } from 'lucide-react';
 import RegistrationForm from './RegistrationForm';
 
-const RegistrationModal = ({ isOpen, onClose, selectedEventId, onRegistered }) => {
+const RegistrationModal = ({ isOpen, onClose, selectedEventId, onRegistered, eventCounts }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
@@ -57,6 +57,7 @@ const RegistrationModal = ({ isOpen, onClose, selectedEventId, onRegistered }) =
           <RegistrationForm
             selectedEventId={selectedEventId}
             isModal={true}
+            eventCounts={eventCounts}
             onSuccess={(data) => {
               if (onRegistered) onRegistered(data);
             }}

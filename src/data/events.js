@@ -25,7 +25,11 @@ export const EVENTS_DATA = [
       phone: "+91 93425 29462",
       email: "civista@college.edu"
     },
+    registrationLimit: 45,
+    limitLabel: "45 Registrations",
+    limitBadge: "Cap: 45 Slots",
     rules: [
+      "Strict limit of 45 registrations on a first-come, first-served basis.",
       "Each presentation will be allotted 8 minutes for presentation followed by 2 minutes of Q&A with the jury.",
       "Presentations must be submitted in .PPTX or .PDF format at the registration desk at least 30 minutes prior to event commencement.",
       "Topics can span Artificial Intelligence, Sustainable Technologies, IoT, Cloud Computing, Cyber Security, or Emerging Innovations.",
@@ -56,6 +60,9 @@ export const EVENTS_DATA = [
     maxTeamSize: 2,
     supportsIndividual: false,
     supportsTeam: true,
+    registrationLimit: 20,
+    limitLabel: "20 Teams",
+    limitBadge: "Cap: 20 Teams",
     accentColor: "cyan",
     badge: "Brain Battle",
     prize: "Winner Certificate + Participation Certificate",
@@ -66,6 +73,7 @@ export const EVENTS_DATA = [
       email: "civista@college.edu"
     },
     rules: [
+      "Strict limit of 20 teams for registration. Registrations close immediately once 20 teams are registered.",
       "Strictly 2 participants per team. Individual participation is not permitted for this event.",
       "Round 1: Rapid Elimination Written/Digital Prelims (30 Questions in 25 Minutes).",
       "Top 6 teams from Prelims advance to the Stage Finals.",
@@ -95,6 +103,9 @@ export const EVENTS_DATA = [
     maxTeamSize: 4,
     supportsIndividual: false,
     supportsTeam: true,
+    registrationLimit: 12,
+    limitLabel: "12 Teams",
+    limitBadge: "Cap: 12 Teams (Strict)",
     accentColor: "amber",
     badge: "Grand Strategy",
     isIplSpecial: true,
@@ -107,6 +118,7 @@ export const EVENTS_DATA = [
       email: "civista@college.edu"
     },
     rules: [
+      "Strict limit of 12 teams for registration. Registrations will close immediately once 12 teams are registered.",
       "Each team consists of 3 to 4 members representing a franchise.",
       "Round 1: Cricket Aptitude & Strategy Qualifier (20 questions testing cricket analytics and IPL history).",
       "Top 8 qualifying teams participate in the Grand Live Bidding Room.",
@@ -137,6 +149,9 @@ export const EVENTS_DATA = [
     maxTeamSize: 4,
     supportsIndividual: false,
     supportsTeam: true,
+    registrationLimit: 15,
+    limitLabel: "15 Teams",
+    limitBadge: "Cap: 15 Teams",
     accentColor: "emerald",
     badge: "Synergy & Fun",
     prize: "Winner Certificate + Participation Certificate",
@@ -147,6 +162,7 @@ export const EVENTS_DATA = [
       email: "civista@college.edu"
     },
     rules: [
+      "Strict limit of 15 teams for registration. Registrations will close immediately once 15 teams are registered.",
       "Team size must be between 2 and 4 members.",
       "Stage 1 - The Trust Walk: Blindfolded team navigation directed purely through single-word audible cues.",
       "Stage 2 - Spaghetti & Marshmallow Tower: Build the highest freestanding structural tower under 10 minutes.",
@@ -162,6 +178,13 @@ export const EVENTS_DATA = [
     whatsappGroupUrl: "https://chat.whatsapp.com/CuEUxEMtHq32aMLpYlFZxW"
   }
 ];
+
+export const EVENT_LIMITS = {
+  "presentation": 45,
+  "technical-quiz": 20,
+  "ipl-auction": 12,
+  "build-the-bond": 15
+};
 
 export const EVENT_WHATSAPP_GROUPS = {
   "presentation": {

@@ -22,7 +22,7 @@ import WhyParticipate from '../components/WhyParticipate';
 import Contact from '../components/Contact';
 import { EVENTS_DATA } from '../data/events';
 
-const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
+const Home = ({ onOpenRegisterModal, selectedEventForModal, eventCounts = {} }) => {
   const [activeFilter, setActiveFilter] = useState('all'); // 'all', 'technical', 'non-technical'
   const [selectedEventForDetails, setSelectedEventForDetails] = useState(null);
 
@@ -149,6 +149,7 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
                       event={event}
                       onViewDetails={(ev) => setSelectedEventForDetails(ev)}
                       onRegister={(evId) => scrollToRegister(evId)}
+                      currentCount={eventCounts[event.id] || 0}
                     />
                   ))}
                 </div>
@@ -177,6 +178,7 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
                       event={event}
                       onViewDetails={(ev) => setSelectedEventForDetails(ev)}
                       onRegister={(evId) => scrollToRegister(evId)}
+                      currentCount={eventCounts[event.id] || 0}
                     />
                   ))}
                 </div>
@@ -191,6 +193,7 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
                   event={event}
                   onViewDetails={(ev) => setSelectedEventForDetails(ev)}
                   onRegister={(evId) => scrollToRegister(evId)}
+                  currentCount={eventCounts[event.id] || 0}
                 />
               ))}
             </div>
@@ -226,6 +229,7 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
             <RegistrationForm
               selectedEventId={selectedEventForModal || ''}
               isModal={false}
+              eventCounts={eventCounts}
             />
           </div>
         </div>
@@ -243,6 +247,7 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal }) => {
           setSelectedEventForDetails(null);
           scrollToRegister(eventId);
         }}
+        currentCount={selectedEventForDetails ? (eventCounts[selectedEventForDetails.id] || 0) : 0}
       />
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowLeft, Sparkles, ShieldCheck } from 'lucide-react';
 import RegistrationForm from '../components/RegistrationForm';
 
-const Register = ({ onBackToHome, preselectedEventId = '' }) => {
+const Register = ({ onBackToHome, preselectedEventId = '', eventCounts, onRegisteredSuccess }) => {
   return (
     <div className="min-h-screen pt-28 pb-20 relative bg-slate-950">
       {/* Ambient background glows */}
@@ -41,6 +41,8 @@ const Register = ({ onBackToHome, preselectedEventId = '' }) => {
           <RegistrationForm
             selectedEventId={preselectedEventId}
             isModal={false}
+            eventCounts={eventCounts}
+            onSuccess={onRegisteredSuccess}
           />
         </div>
       </div>

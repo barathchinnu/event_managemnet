@@ -19,6 +19,47 @@
 // ─── YOUR EXACT GOOGLE SHEET ID ──────────────────────────────────────────────
 var SPREADSHEET_ID = "1y_yExPwx9ZTyHc15ZyUOgnUeda4eaDFFMlcOnT3vks4";
 
+// ─── EVENT REGISTRATION LIMITS (CAPACITY CAPS) ─────────────────────────────
+var EVENT_LIMITS = {
+  "presentation": 45,
+  "technical-quiz": 20,
+  "ipl-auction": 12,
+  "build-the-bond": 15
+};
+
+function normalizeEventKey(eventName) {
+  if (!eventName) return null;
+  var s = String(eventName).toLowerCase().trim();
+  if (s.indexOf("ipl") !== -1 || s.indexOf("auction") !== -1) return "ipl-auction";
+  if (s.indexOf("quiz") !== -1) return "technical-quiz";
+  if (s.indexOf("bond") !== -1) return "build-the-bond";
+  if (s.indexOf("presentation") !== -1 || s.indexOf("paper") !== -1) return "presentation";
+  return null;
+}
+
+function getEventRegistrationCounts(sheet) {
+  var counts = {
+    "presentation": 0,
+    "technical-quiz": 0,
+    "ipl-auction": 0,
+    "build-the-bond": 0
+  };
+
+  var lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return counts;
+
+  // Read column 8 ("Event") from row 2 to lastRow
+  var values = sheet.getRange(2, 8, lastRow - 1, 1).getValues();
+  for (var i = 0; i < values.length; i++) {
+    var key = normalizeEventKey(values[i][0]);
+    if (key && counts.hasOwnProperty(key)) {
+      counts[key]++;
+    }
+  }
+
+  return counts;
+}
+
 // Expected column headers for CIVISTA 2026
 var HEADERS = [
   "Registration ID",
@@ -143,6 +184,24 @@ function doPost(e) {
     var target = getTargetSheet();
     var sheet = target.sheet;
 
+    // ── Enforce Event Registration Capacity Limits ──
+    var counts = getEventRegistrationCounts(sheet);
+    var eventKey = normalizeEventKey(data.event);
+    if (eventKey && EVENT_LIMITS[eventKey]) {
+      var limit = EVENT_LIMITS[eventKey];
+      if (counts[eventKey] >= limit) {
+        lock.releaseLock();
+        return corsResponse({
+          success: false,
+          limitReached: true,
+          eventKey: eventKey,
+          currentCount: counts[eventKey],
+          limit: limit,
+          message: "Registration limit reached! " + (data.event || "This event") + " has reached its strict cap of " + limit + " registrations and is now closed."
+        });
+      }
+    }
+
     // Generate sequential Registration ID (CIVISTA-0001, CIVISTA-0002, ...)
     var lastRow = sheet.getLastRow();
     var nextNumber = Math.max(1, lastRow); // lastRow includes row 1 header
@@ -175,6 +234,9 @@ function doPost(e) {
       regTime
     ]);
 
+    // Recalculate counts after append
+    counts[eventKey] = (counts[eventKey] || 0) + 1;
+
     lock.releaseLock();
 
     return corsResponse({
@@ -187,6 +249,7 @@ function doPost(e) {
       spreadsheetId: target.ss.getId(),
       spreadsheetUrl: target.ss.getUrl(),
       totalRows: sheet.getLastRow(),
+      eventCounts: counts,
       message: "Registration successful"
     });
 
@@ -219,8 +282,16 @@ function doGet(e) {
     error: null
   };
 
+  var eventCounts = {
+    "presentation": 0,
+    "technical-quiz": 0,
+    "ipl-auction": 0,
+    "build-the-bond": 0
+  };
+
   try {
     var target = getTargetSheet();
+    eventCounts = getEventRegistrationCounts(target.sheet);
     statusInfo.connected = true;
     statusInfo.spreadsheetName = target.ss.getName();
     statusInfo.spreadsheetId = target.ss.getId();
@@ -236,7 +307,9 @@ function doGet(e) {
     success: true,
     status: "CIVISTA 2026 Google Apps Script backend is running successfully.",
     spreadsheet: statusInfo,
+    eventCounts: eventCounts,
+    eventLimits: EVENT_LIMITS,
     serverTime: new Date().toISOString(),
-    version: "2.1.0"
+    version: "2.2.0"
   });
 }

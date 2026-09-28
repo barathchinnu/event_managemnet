@@ -102,3 +102,51 @@ export const exportRegistrationsToCSV = () => {
   return true;
 };
 
+/**
+ * Returns registration counts grouped by event ID from local storage.
+ */
+export const getStoredEventCounts = () => {
+  try {
+    const registrations = getStoredRegistrations();
+    const counts = {
+      "presentation": 0,
+      "technical-quiz": 0,
+      "ipl-auction": 0,
+      "build-the-bond": 0
+    };
+
+    registrations.forEach(reg => {
+      const raw = (reg.event || reg.eventTitle || "").toLowerCase();
+      if (raw.includes("ipl") || raw.includes("auction")) {
+        counts["ipl-auction"]++;
+      } else if (raw.includes("quiz")) {
+        counts["technical-quiz"]++;
+      } else if (raw.includes("bond")) {
+        counts["build-the-bond"]++;
+      } else if (raw.includes("presentation") || raw.includes("paper")) {
+        counts["presentation"]++;
+      }
+    });
+
+    return counts;
+  } catch (err) {
+    console.error("Error calculating stored event counts:", err);
+    return {
+      "presentation": 0,
+      "technical-quiz": 0,
+      "ipl-auction": 0,
+      "build-the-bond": 0
+    };
+  }
+};
+
+/**
+ * Check if an event has reached its maximum registration limit.
+ */
+export const isEventFull = (eventId, currentCount, limits = { "presentation": 45, "technical-quiz": 20, "ipl-auction": 12, "build-the-bond": 15 }) => {
+  const limit = limits[eventId];
+  if (!limit) return false;
+  return (currentCount || 0) >= limit;
+};
+
+

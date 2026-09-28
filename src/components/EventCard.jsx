@@ -12,11 +12,15 @@ import {
   HeartHandshake, 
   Trophy, 
   CheckCircle,
-  Coins
+  Coins,
+  Ticket,
+  AlertCircle
 } from 'lucide-react';
 
-const EventCard = ({ event, onViewDetails, onRegister }) => {
+const EventCard = ({ event, onViewDetails, onRegister, currentCount = 0 }) => {
   const isIpl = event.isIplSpecial;
+  const isFull = event.registrationLimit && currentCount >= event.registrationLimit;
+  const spotsLeft = event.registrationLimit ? Math.max(0, event.registrationLimit - currentCount) : null;
 
   // Select appropriate icon
   const getEventIcon = () => {
@@ -55,18 +59,36 @@ const EventCard = ({ event, onViewDetails, onRegister }) => {
 
       <div className="p-6 sm:p-7 flex-1 flex flex-col">
         {/* Top Badges & Category */}
-        <div className="flex items-center justify-between gap-2 mb-4">
-          <span
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
-              event.type === 'technical'
-                ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30'
-                : isIpl
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/20'
-                : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-            }`}
-          >
-            {event.category}
-          </span>
+        <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
+                event.type === 'technical'
+                  ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30'
+                  : isIpl
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/20'
+                  : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+              }`}
+            >
+              {event.category}
+            </span>
+
+            {/* Registration Capacity Limit Badge */}
+            {isFull ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 text-[10px] font-extrabold uppercase tracking-wider">
+                Full ({event.registrationLimit}/{event.registrationLimit})
+              </span>
+            ) : event.registrationLimit ? (
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                isIpl
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  : 'bg-slate-800 text-slate-300 border border-slate-700'
+              }`}>
+                <Ticket className="w-3 h-3 text-amber-400" />
+                <span>Limit: {event.limitLabel || `${event.registrationLimit} Slots`}</span>
+              </span>
+            ) : null}
+          </div>
 
           <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
@@ -141,6 +163,19 @@ const EventCard = ({ event, onViewDetails, onRegister }) => {
             <Users className="w-4 h-4 text-slate-400 shrink-0" />
             <span>{event.teamSize}</span>
           </div>
+          {event.registrationLimit && (
+            <div className="flex items-center gap-2.5">
+              <Ticket className="w-4 h-4 text-amber-400 shrink-0" />
+              <span>
+                Registration Cap: <strong className="text-white">{event.limitLabel || `${event.registrationLimit} Slots`}</strong>
+                {currentCount > 0 && (
+                  <span className="text-slate-400 ml-1">
+                    ({currentCount}/{event.registrationLimit} registered)
+                  </span>
+                )}
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -153,17 +188,26 @@ const EventCard = ({ event, onViewDetails, onRegister }) => {
           View Details
         </button>
 
-        <button
-          onClick={() => onRegister(event.id)}
-          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-white transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5 ${
-            isIpl
-              ? 'bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-extrabold shadow-amber-500/20'
-              : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-indigo-600/25'
-          }`}
-        >
-          <span>Register Now</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        {isFull ? (
+          <button
+            disabled
+            className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-slate-400 bg-slate-900 border border-slate-800 cursor-not-allowed opacity-80 text-center"
+          >
+            Registrations Full
+          </button>
+        ) : (
+          <button
+            onClick={() => onRegister(event.id)}
+            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-white transition-all shadow-md active:scale-95 flex items-center justify-center gap-1.5 ${
+              isIpl
+                ? 'bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-extrabold shadow-amber-500/20'
+                : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-indigo-600/25'
+            }`}
+          >
+            <span>Register Now</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
     </div>
   );

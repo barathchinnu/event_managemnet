@@ -90,6 +90,36 @@ export async function testConnectionToSheets() {
 }
 
 /**
+ * Fetches live registration counts per event from Google Apps Script.
+ * Returns { presentation, "technical-quiz", "ipl-auction", "build-the-bond" } or null.
+ */
+export async function fetchLiveEventCounts() {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.trim() === '') {
+    return null;
+  }
+
+  try {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (data && data.eventCounts) {
+      return data.eventCounts;
+    }
+    return null;
+  } catch (err) {
+    console.warn('[CIVISTA] Could not fetch live event counts from Google Sheets:', err);
+    return null;
+  }
+}
+
+/**
  * Submit a registration to Google Sheets via Google Apps Script.
  *
  * @param {object} formData       - The raw form state object
@@ -123,10 +153,14 @@ export async function submitRegistrationToSheets(formData, eventConfig) {
 
     const result = await response.json();
     if (!result.success) {
-      throw new Error(result.message || 'Google Sheets returned an error while saving data.');
+      const err = new Error(result.message || 'Google Sheets returned an error while saving data.');
+      if (result.limitReached) {
+        err.limitReached = true;
+      }
+      throw err;
     }
 
-    return result; // { success: true, registrationId, registrationDate, registrationTime, message }
+    return result; // { success: true, registrationId, registrationDate, registrationTime, message, eventCounts }
 
   } catch (err) {
     // If the browser threw a network/CORS error, diagnose it specifically
