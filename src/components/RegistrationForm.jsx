@@ -306,13 +306,20 @@ const RegistrationForm = ({
     } catch (err) {
       console.error('[CIVISTA] Registration error:', err);
       setIsSubmitting(false);
+      const isLimitErr = Boolean(
+        err.limitReached || 
+        err.message?.toLowerCase().includes('limit reached') || 
+        err.message?.toLowerCase().includes('capacity') ||
+        err.message?.toLowerCase().includes('full')
+      );
       setSubmissionError({
-        message: err.message || 'Unable to save your registration right now. Please try again.'
+        message: err.message || 'Unable to save your registration right now. Please try again.',
+        limitReached: isLimitErr
       });
       addToast({
         type: 'error',
-        title: 'Registration Failed',
-        message: 'Could not connect to the registration server. Your form data is preserved.'
+        title: isLimitErr ? 'Limit Reached' : 'Registration Failed',
+        message: err.message || 'Could not connect to the registration server. Your form data is preserved.'
       });
     }
   };
@@ -406,7 +413,42 @@ const RegistrationForm = ({
     }
   };
 
-  // ── ERROR SCREEN: API failed but form data is preserved ──────────────────
+  // ── ERROR SCREEN 1: Capacity Limit Hit on Backend ──────────────────────────
+  if (submissionError && submissionError.limitReached) {
+    return (
+      <div className="bg-slate-900/90 border border-amber-500/40 rounded-3xl p-6 sm:p-10 text-center backdrop-blur-xl shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="w-16 h-16 bg-amber-500/20 border border-amber-500/40 rounded-2xl flex items-center justify-center mx-auto mb-4 text-amber-400">
+          <Ticket className="w-10 h-10" />
+        </div>
+
+        <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2 font-heading">
+          Registration Limit Reached!
+        </h3>
+
+        <p className="text-slate-200 text-sm sm:text-base max-w-lg mx-auto mb-4 font-semibold">
+          {submissionError.message}
+        </p>
+
+        <p className="text-xs text-slate-400 mb-6 max-w-md mx-auto leading-relaxed">
+          The organizer has placed a strict registration cap on this event. Registrations are automatically closed once the quota is filled. Please select another event to participate in CIVISTA 2026.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button
+            onClick={() => {
+              setSubmissionError(null);
+              setFormData(prev => ({ ...prev, event: '' }));
+            }}
+            className="w-full sm:w-auto px-7 py-3 rounded-xl text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-600/20"
+          >
+            Choose Another Event
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── ERROR SCREEN 2: API failed but form data is preserved ──────────────────
   if (submissionError) {
     return (
       <div className="bg-slate-900/90 border border-red-500/40 rounded-3xl p-6 sm:p-10 text-center backdrop-blur-xl shadow-2xl animate-in zoom-in-95 duration-300">

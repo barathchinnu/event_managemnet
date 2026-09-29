@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowRight, Calendar, MapPin, Trophy, Users, ShieldCheck, Flame, PlayCircle, FileText } from 'lucide-react';
+import { Sparkles, ArrowRight, Calendar, MapPin, Trophy, Users, ShieldCheck, Flame } from 'lucide-react';
 import { FEST_DETAILS } from '../data/events';
 import HeroBannerCarousel from './HeroBannerCarousel';
 
-const Hero = ({ onExploreEvents, onOpenRegister, onViewShowcase }) => {
+const Hero = ({ onExploreEvents, onOpenRegister }) => {
   // Countdown Timer calculation to fest date
   const [timeLeft, setTimeLeft] = useState({
     days: 32,
@@ -95,14 +95,6 @@ const Hero = ({ onExploreEvents, onOpenRegister, onViewShowcase }) => {
             >
               <Sparkles className="w-5 h-5 text-indigo-200" />
               <span>Register Now</span>
-            </button>
-
-            <button
-              onClick={onViewShowcase}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl font-bold text-base text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400/60 shadow-xl transition-all duration-300 flex items-center justify-center gap-3 group active:scale-95 cursor-pointer"
-            >
-              <FileText className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span>Official Poster Flow</span>
             </button>
           </div>
 

@@ -13,7 +13,6 @@ import {
   Layers
 } from 'lucide-react';
 import Hero from '../components/Hero';
-import PosterShowcase from '../components/PosterShowcase';
 import EventCard from '../components/EventCard';
 import EventDetails from '../components/EventDetails';
 import RegistrationForm from '../components/RegistrationForm';
@@ -39,11 +38,6 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal, eventCounts = {} }) 
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToShowcase = () => {
-    const el = document.getElementById('poster') || document.getElementById('showcase');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const scrollToRegister = (eventId) => {
     onOpenRegisterModal(eventId);
   };
@@ -54,13 +48,6 @@ const Home = ({ onOpenRegisterModal, selectedEventForModal, eventCounts = {} }) 
       <Hero
         onExploreEvents={scrollToEvents}
         onOpenRegister={() => onOpenRegisterModal('')}
-        onViewShowcase={scrollToShowcase}
-      />
-
-      {/* 2. OFFICIAL POSTER SHOWCASE (Dedicated Portrait Ratio with Zoom Lightbox & Arenas) */}
-      <PosterShowcase
-        onOpenRegister={onOpenRegisterModal}
-        onExploreEvents={scrollToEvents}
       />
 
       {/* 2. EVENTS SECTION */}

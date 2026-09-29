@@ -37,6 +37,20 @@ function normalizeEventKey(eventName) {
   return null;
 }
 
+function getEventColumnIndex(sheet) {
+  try {
+    var lastCol = Math.max(1, sheet.getLastColumn());
+    var headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    for (var col = 0; col < headerRow.length; col++) {
+      var h = String(headerRow[col] || "").trim().toLowerCase();
+      if (h === "event" || h === "event title" || h === "event name" || h.indexOf("event") !== -1) {
+        return col + 1; // 1-based column index
+      }
+    }
+  } catch (e) {}
+  return 8; // fallback to column 8 ("Event")
+}
+
 function getEventRegistrationCounts(sheet) {
   var counts = {
     "presentation": 0,
@@ -48,8 +62,9 @@ function getEventRegistrationCounts(sheet) {
   var lastRow = sheet.getLastRow();
   if (lastRow <= 1) return counts;
 
-  // Read column 8 ("Event") from row 2 to lastRow
-  var values = sheet.getRange(2, 8, lastRow - 1, 1).getValues();
+  var eventCol = getEventColumnIndex(sheet);
+  // Read event column from row 2 to lastRow
+  var values = sheet.getRange(2, eventCol, lastRow - 1, 1).getValues();
   for (var i = 0; i < values.length; i++) {
     var key = normalizeEventKey(values[i][0]);
     if (key && counts.hasOwnProperty(key)) {
@@ -186,7 +201,7 @@ function doPost(e) {
 
     // ── Enforce Event Registration Capacity Limits ──
     var counts = getEventRegistrationCounts(sheet);
-    var eventKey = normalizeEventKey(data.event);
+    var eventKey = normalizeEventKey(data.eventId || data.event);
     if (eventKey && EVENT_LIMITS[eventKey]) {
       var limit = EVENT_LIMITS[eventKey];
       if (counts[eventKey] >= limit) {
@@ -289,8 +304,12 @@ function doGet(e) {
     "build-the-bond": 0
   };
 
+  var sampleEvents = [];
+  var detectedEventCol = 8;
+
   try {
     var target = getTargetSheet();
+    detectedEventCol = getEventColumnIndex(target.sheet);
     eventCounts = getEventRegistrationCounts(target.sheet);
     statusInfo.connected = true;
     statusInfo.spreadsheetName = target.ss.getName();
@@ -299,6 +318,15 @@ function doGet(e) {
     statusInfo.sheetName = target.sheet.getName();
     statusInfo.totalRows = target.sheet.getLastRow();
     statusInfo.headersInitialized = target.sheet.getLastRow() >= 1;
+
+    // Grab up to 5 events for diagnostic check
+    if (target.sheet.getLastRow() > 1) {
+      var countRows = Math.min(5, target.sheet.getLastRow() - 1);
+      var rows = target.sheet.getRange(2, detectedEventCol, countRows, 1).getValues();
+      for (var r = 0; r < rows.length; r++) {
+        sampleEvents.push(String(rows[r][0] || ""));
+      }
+    }
   } catch (err) {
     statusInfo.error = err.message;
   }
@@ -307,9 +335,11 @@ function doGet(e) {
     success: true,
     status: "CIVISTA 2026 Google Apps Script backend is running successfully.",
     spreadsheet: statusInfo,
+    detectedEventCol: detectedEventCol,
+    sampleEvents: sampleEvents,
     eventCounts: eventCounts,
     eventLimits: EVENT_LIMITS,
     serverTime: new Date().toISOString(),
-    version: "2.2.0"
+    version: "2.3.0"
   });
 }

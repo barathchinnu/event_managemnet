@@ -31,6 +31,7 @@ function buildPayload(formData, eventConfig) {
     college:           formData.college.trim(),
     department:        formData.department,
     year:              formData.year,
+    eventId:           formData.event,
     event:             eventConfig ? eventConfig.title : formData.event,
     category:          eventConfig ? eventConfig.category : '',
     participationType: formData.participationType,
