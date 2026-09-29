@@ -172,14 +172,18 @@ const Contact = () => {
                       {FEST_DETAILS.contact.studentCoordinator.designation}
                     </p>
                     <div className="flex flex-wrap gap-4 text-xs text-purple-300 mt-2">
-                      <a href={`tel:${FEST_DETAILS.contact.studentCoordinator.phone}`} className="hover:underline flex items-center gap-1">
-                        <Phone className="w-3.5 h-3.5" />
-                        {FEST_DETAILS.contact.studentCoordinator.phone}
-                      </a>
-                      <a href={`mailto:${FEST_DETAILS.contact.studentCoordinator.email}`} className="hover:underline flex items-center gap-1">
-                        <Mail className="w-3.5 h-3.5" />
-                        {FEST_DETAILS.contact.studentCoordinator.email}
-                      </a>
+                      {FEST_DETAILS.contact.studentCoordinator.phone && (
+                        <a href={`tel:${FEST_DETAILS.contact.studentCoordinator.phone}`} className="hover:underline flex items-center gap-1">
+                          <Phone className="w-3.5 h-3.5" />
+                          {FEST_DETAILS.contact.studentCoordinator.phone}
+                        </a>
+                      )}
+                      {FEST_DETAILS.contact.studentCoordinator.email && (
+                        <a href={`mailto:${FEST_DETAILS.contact.studentCoordinator.email}`} className="hover:underline flex items-center gap-1">
+                          <Mail className="w-3.5 h-3.5" />
+                          {FEST_DETAILS.contact.studentCoordinator.email}
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

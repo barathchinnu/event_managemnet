@@ -181,7 +181,7 @@ const PosterShowcase = ({ onOpenRegister, onExploreEvents }) => {
                   <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span className="font-semibold text-slate-400">For Queries:</span>
                   <span className="text-white font-medium">
-                    Maheshkumar S (+91 93425 29462) &bull; Suganya S S (+91 98429 83032)
+                    Maheshkumar S (+91 93425 29462)
                   </span>
                 </div>
 

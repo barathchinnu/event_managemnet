@@ -277,7 +277,6 @@ export const FEST_DETAILS = {
     studentCoordinator: {
       name: "Suganya S S",
       designation: "Student Coordinator, CEA",
-      phone: "+91 9842983032",
       email: "suganyass.24civil@kongu.edu"
     },
     portalUrl: "https://event-managemnet.vercel.app/",
